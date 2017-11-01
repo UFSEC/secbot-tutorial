@@ -74,16 +74,23 @@ Lastly, we're printing to the console to let us know our program is running
 
 ```javascript
 //require is like import/include
-var slackbot = require('slackbots');
+//var slackbot = require('slackbots');
 var express = require('express');
 var bodyParser = require('body-parser');
 
 var app = express();
 var port = process.env.PORT || 1337;
-var bot = new SlackBot({
-    token: 'YOUR_TOKEN_HERE', // Add a bot https://my.slack.com/services/new/bot and put the token
-    name: 'My Bot'
-});
+//var bot = new slackbot({
+//   token: 'YOUR_TOKEN_HERE', // Add a bot https://my.slack.com/services/new/bot and put the token
+//    name: 'My Bot'
+//});
+//bot.on('start', function(){
+//  var params = {
+//    icon_emoji: ':triumph:'
+//  };
+
+//  bot.postMessageToChannel('general', 'SEC is the BEST', params);
+//});
 
 // body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -126,7 +133,7 @@ app.post('/hello', function (req, res, next) {
     //extract information about the user which created the request
   var userName = req.body.user_name; //request for username
   var botPayload = {
-    text : 'Hello ' + userName + ', welcome to UF SEC Slack channel! I\'ll be your guide.'
+    text : 'Hello ' + userName + ', welcome to UF SEC Slack channel!'
   };
   // loop
   if (userName !== 'slackbot') {
