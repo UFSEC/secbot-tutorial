@@ -69,7 +69,7 @@ Next we're going to create our javascript file which will contain most of the lo
 
 First, we're creating variables to import/include the Node modules we'll be needing like express, bodyParser, and slabot.
 Then, we're creating a var to contain the function for express, the server to host our code, and the slackbot.
-Then, we're using an express method to parse the data //TODO
+Then, we're using an express method to parse the data. [Here's](https://medium.com/@adamzerner/how-bodyparser-works-247897a93b90) some more information about how bodyParser works in case you're curious.
 Lastly, we're printing to the console to let us know our program is running
 
 ```javascript
@@ -93,6 +93,8 @@ var port = process.env.PORT || 1337;
 //});
 
 // body parser middleware
+// important if you need to know not just the url you hit, but also the context and content of the POST request
+// basically middleware to parse JSON
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Hello world test
@@ -135,7 +137,7 @@ app.post('/hello', function (req, res, next) {
   var botPayload = {
     text : 'Hello ' + userName + ', welcome to UF SEC Slack channel!'
   };
-  // loop
+  // loop continuously
   if (userName !== 'slackbot') {
     return res.status(200).json(botPayload); //json response to be sent to slack
   } else {
@@ -215,6 +217,26 @@ Email or facebook message me your completed challenge or any other ways you get 
 
 With your permission, we can even feature your creations on our Facebook and website!
 ## Helpful links, tips, and sources
+
+I have to credit [devdactic](https://devdactic.com/first-slackbot/) here for teaching me everything I know and used in this interview!
+
+More about the slackbots package for node:
+https://www.npmjs.com/package/slackbots
+
+Take your Watson bot to the next level:
+https://olegkorol.de/2017/04/23/Creating-a-smart-ChatBot-for-Slack/
+
+[npmjs](https://www.npmjs.com/) for exploring all the different packages available to you
+
+More about Node/Express
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Introduction
+https://expressjs.com/en/starter/installing.html
+
+More about Slack applications
+https://api.slack.com/slack-apps
+
+Another neat tutorial I was looking at:
+https://scotch.io/tutorials/building-a-slack-bot-with-node-js-and-chuck-norris-super-powers
 
 ## Thanks for following along!
 My name is Daniela and my email is dtravie@gmail.com if you have any questions or comments
