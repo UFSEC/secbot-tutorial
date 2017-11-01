@@ -48,6 +48,143 @@ The lovely documentation from [npmjs.com](https://docs.npmjs.com/getting-started
 }
 
 ```
+
+#### NPM
+
+NPM is called a Node Package Manager. It basically helps you install all the packages you need for any module (JS libraries) in NodeJS.
+[npmjs.com](https://www.npmjs.com/) has amazing documentation and different packages you can install.
+
+Go ahead and run these two commands in your command line (making sure you're in the folder where the package.json file is located)
+
+```
+npm install
+```
+ ```
+ npm install slackbots
+ ```
+
+#### app.js
+
+Next we're going to create our javascript file which will contain most of the logic of our slackbot
+
+First, we're creating variables to import/include the Node modules we'll be needing like express, bodyParser, and slabot.
+Then, we're creating a var to contain the function for express, the server to host our code, and the slackbot.
+Then, we're using an express method to parse the data //TODO
+Lastly, we're printing to the console to let us know our program is running
+
+```javascript
+//require is like import/include
+var slackbot = require('slackbots');
+var express = require('express');
+var bodyParser = require('body-parser');
+
+var app = express();
+var port = process.env.PORT || 1337;
+var bot = new SlackBot({
+    token: 'YOUR_TOKEN_HERE', // Add a bot https://my.slack.com/services/new/bot and put the token
+    name: 'My Bot'
+});
+
+// body parser middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Hello world test
+app.get('/', function (req, res) { res.status(200).send('Hello world!'); });
+
+app.listen(port, function () {
+  console.log('Listening on port ' + port);
+});
+```
+
+
+#### Checkpoint!
+
+Run your app by going to your command line and typing in
+
+```
+node app.js
+```
+It should print
+
+```
+Listening on port YOUR_PORT_HERE
+```
+
+Then open a new window and type in this simple bash command to grab information given a url
+
+```
+curl 'localhost:YOUR_PORT_HERE/'
+```
+### Let's create our Slackbot!
+
+
+```javascript
+
+
+//once a POST request is received at /hello
+app.post('/hello', function (req, res, next) {
+    //extract information about the user which created the request
+  var userName = req.body.user_name; //request for username
+  var botPayload = {
+    text : 'Hello ' + userName + ', welcome to UF SEC Slack channel! I\'ll be your guide.'
+  };
+  // loop
+  if (userName !== 'slackbot') {
+    return res.status(200).json(botPayload); //json response to be sent to slack
+  } else {
+    return res.status(200).end();
+  }
+});
+
+```
+### Heroku!!!
+
+platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.
+
+Up until now our bot operates only locally. In order to get it connected to the internet we need heroku to create a server to run our app
+I hope by now that you already have your heroku account created, if not do this now! Also make sure you have the Heroku cli tool installed as well!
+
+To create a heroku app we need what's called a **Procfile**.
+
+"A Procfile is a mechanism for declaring what commands are run by your application’s dynos on the Heroku platform. It follows the process model. You can use a Procfile to declare various process types, such as multiple types of workers, a singleton process like a clock, or a consumer of the Twitter streaming API."
+ [Here](https://devcenter.heroku.com/articles/procfile) are some more details in case you're curious.
+
+Create a new file, name it Procfile and just write
+
+```
+web: node app
+```
+
+In order to push our code to the heroku app we need to run the following git commands:
+
+```
+git init
+git add .
+git commit -m "Initial commit"
+```
+Then type these commands out:
+```
+heroku create
+git push heroku master
+```
+If this is you first time doing this I believe it will prompt you to enter your username and password.
+
+#### Checkpoint!
+
+If the commands were successful you should have a url where the app is launched. Go to the url and it should say "Hello World!"
+
+
+### Slack configurations
+
+Navigate to your slack workspace and go to Customize. After you are there use the search bar to find "Outgoing Webhooks". Configure a new hook.
+
+We want to set a trigger word and the url it corresponds to. Write your trigger word and append the "/hello" to the end of it so it can route to the POST we want it to use.
+
+If you go to your workspace now when you type the trigger word your slackbot should respond accordingly.
+
+Everytime someone mentions the trigger word, Slack is able to route to the path we specified and receive the JSON data from it.
+
+
 ## Join our Slack at ufsec.slack.com !
 
 
